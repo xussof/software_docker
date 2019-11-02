@@ -1,0 +1,38 @@
+---
+- name: Add an Apt signing key, uses whichever key is at the URL
+  become: true
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add apt-repo
+  become: true
+  shell: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+- name: Install docker
+  become: true
+  apt:
+    pkg: "{{ item }}"
+    update_cache: yes
+    state: latest
+  with_items: "{{ software_packages }}"
+  notify: Restart docker
+
+- name: Making docker executable from user
+  become: true
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes
+  notify: Restart machine
+
+#- name: Wait for machine to restart
+#  local_action:
+#    module: wait_for
+#      host={{ inventory_hostname }}
+#      port=22
+#      delay=5
+#      timeout=300
+#      state=started
+
+#byxussof
