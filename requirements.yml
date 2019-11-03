@@ -3,19 +3,19 @@
 - src: https://github.com/xussof/software_software-properties-common
   scm: git
   version: master
-  name: software_software-properties-common
+  name: xussof.software_software-properties-common
 
 - src: https://github.com/xussof/software_curl
   scm: git
   version: master
-  name: software_curl
+  name: xussof.software_curl
 
 - src: https://github.com/xussof/software_ca-certificates
   scm: git
   version: master
-  name: software_ca-certificates
+  name: xussof.software_ca-certificates
 
 - src: https://github.com/xussof/software_apt-transport-https
   scm: git
   version: master
-  name: software_apt-transport-https
+  name: xussof.software_apt-transport-https
