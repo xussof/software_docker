@@ -24,7 +24,7 @@
     name: "{{ ansible_user_id }}"
     groups: docker
     append: yes
-  notify: Restart machine
+    #  notify: Restart machine
 
 #- name: Wait for machine to restart
 #  local_action:
