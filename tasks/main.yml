@@ -4,10 +4,12 @@
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Add apt-repo
   become: true
   shell: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  when: ansible_distribution == 'Ubuntu'
 
 - name: Install docker
   become: true
@@ -17,6 +19,24 @@
     state: latest
   with_items: "{{ software_packages }}"
   notify: Restart docker
+  when: ansible_distribution == 'Ubuntu'
+
+
+
+- name: Add Docker repo for CentOS
+  become: true
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+  when: ansible_distribution == 'CentOS'
+
+- name: Installing docker packages
+  become: true
+  package:
+    name: docker-ce
+    state: present
+  with_items: "{{ software_packages }}"
+  when: ansible_distribution == 'CentOS'
 
 - name: Making docker executable from user
   become: true
@@ -24,7 +44,8 @@
     name: "{{ ansible_user_id }}"
     groups: docker
     append: yes
-    #  notify: Restart machine
+  notify: restart_docker
+
 
 #- name: Wait for machine to restart
 #  local_action:
